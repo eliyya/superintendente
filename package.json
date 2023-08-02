@@ -1,0 +1,48 @@
+{
+  "name": "superintendente",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "offdjs build/server.js -i GUILDS GUILD_MEMBERS -r build",
+    "dev": "nodemon -e js --exec \"npm start\"",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "2.11.2",
+    "express": "^4.18.2",
+    "jimp": "0.22.8",
+    "offdjs": "2.4.0",
+    "ws": "8.13.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "eslint": "^8.45.0",
+    "nodemon": "3.0.1",
+    "ts-standard": "^12.0.2",
+    "typescript": "5.1.6"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/ts-standard/eslintrc.json",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/indent": [
+        "error",
+        4
+      ],
+      "@typescript-eslint/strict-boolean-expressions": "off",
+      "@typescript-eslint/comma-dangle": [
+        "error",
+        "always-multiline"
+      ]
+    }
+  }
+}
