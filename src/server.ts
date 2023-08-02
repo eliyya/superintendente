@@ -4,6 +4,7 @@ const app = Express()
 
 app.get('/webhook/twitch/:ID', (req, res) => {
     console.log(req.params.ID)
+    res.send('ok')
 })
 
 app.listen(3000, () => {
