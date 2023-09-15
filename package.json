@@ -43,7 +43,8 @@
       "@typescript-eslint/comma-dangle": [
         "error",
         "always-multiline"
-      ]
+      ],
+      "@typescript-eslint/no-extraneous-class": "off"
     }
   },
   "engines": {

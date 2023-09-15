@@ -7,35 +7,53 @@ export type Json =
   | Json[]
 
 export interface Database {
-  public: {
-    Tables: {
-      guilds: {
-        Row: {
-          id: string
-          welcome_channel: string | null
+    public: {
+        Tables: {
+            guilds: {
+                Row: {
+                    id: string
+                    welcome_channel: string | null
+                }
+                Insert: {
+                    id: string
+                    welcome_channel?: string | null
+                }
+                Update: {
+                    id?: string
+                    welcome_channel?: string | null
+                }
+                Relationships: []
+            }
+            welcome_config: {
+                Row: {
+                    channel: string | null
+                    id: string
+                    message: string | null
+                }
+                Insert: {
+                    channel?: string | null
+                    id: string
+                    message?: string | null
+                }
+                Update: {
+                    channel?: string | null
+                    id?: string
+                    message?: string | null
+                }
+                Relationships: []
+            }
         }
-        Insert: {
-          id: string
-          welcome_channel?: string | null
+        Views: {
+            [_ in never]: never
         }
-        Update: {
-          id?: string
-          welcome_channel?: string | null
+        Functions: {
+            [_ in never]: never
         }
-        Relationships: []
-      }
+        Enums: {
+            [_ in never]: never
+        }
+        CompositeTypes: {
+            [_ in never]: never
+        }
     }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
 }

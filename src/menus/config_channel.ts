@@ -1,6 +1,6 @@
 import { createSelectWelcomeChannel, createWelcomeConfigEmbed } from '../commands/config.js'
 import { AnySelectMenuInteraction } from 'offdjs/djs'
-import { supabase } from '../supabase.js'
+import { WelcomeConfigModel } from '../models/welcome_config/supabase.js'
 
 export async function handler (interaction: AnySelectMenuInteraction) {
     if (!interaction.isChannelSelectMenu()) return
@@ -11,10 +11,7 @@ export async function handler (interaction: AnySelectMenuInteraction) {
     const channel = interaction.channels.first()
     if (!channel) {
         // delete
-        await supabase.from('guilds').upsert({
-            id: interaction.guildId,
-            welcome_channel: null,
-        }).eq('id', interaction.guildId)
+        await WelcomeConfigModel.update(interaction.guildId, { channel: null })
         await interaction.message.edit({
             embeds: [
                 createWelcomeConfigEmbed(null),
@@ -25,10 +22,7 @@ export async function handler (interaction: AnySelectMenuInteraction) {
         })
         return await interaction.editReply('Configuracion actualizada')
     }
-    await supabase.from('guilds').upsert({
-        id: interaction.guildId,
-        welcome_channel: channel.id,
-    }).eq('id', interaction.guildId)
+    await WelcomeConfigModel.update(interaction.guildId, { channel: channel.id })
     await interaction.message.edit({
         embeds: [
             createWelcomeConfigEmbed(channel.id),

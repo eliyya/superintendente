@@ -2,6 +2,7 @@
 import {
     // AttachmentBuilder,
     Client,
+    // GuildMember,
     // EmbedBuilder
 } from 'offdjs/djs'
 // import { join } from 'path'
@@ -9,8 +10,6 @@ import {
 
 export async function handler (client: Client<true>) {
     console.log(`Logged in as ${client.user.username}!`)
-    // const bot = client.guilds.cache.get('1011373470451499148')?.members.me as GuildMember
-    // client.emit('guildMemberAdd', bot)
 
     // const guild = client.guilds.cache.get('1128547453449273384')
     // if (!guild) return

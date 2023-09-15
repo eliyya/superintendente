@@ -2,21 +2,15 @@ import { GuildMember, AttachmentBuilder } from 'offdjs/djs'
 import { join } from 'node:path'
 import Canvas from 'canvas'
 import Jimp from 'jimp'
-import cacheGuilds from '../cache/cacheGuilds.js'
-import { supabase } from '../supabase.js'
+import { WelcomeConfigModel } from '../models/welcome_config/supabase.js'
 
 export async function handler (member: GuildMember) {
     const guild = member.guild
-    const channelId = cacheGuilds.get(member.guild.id)?.welcome_channel ?? (await supabase.from('guilds').select().eq('id', member.guild.id)).data?.[0].welcome_channel
-    if (!channelId) return
-    const channel = guild.channels.cache.get(channelId)
+    const config = await WelcomeConfigModel.get(member.guild.id)
+    if (!config.channel) return
+    const channel = guild.channels.cache.get(config.channel)
     if (!channel) return
     if (!channel.isTextBased()) return
-    // cache
-    cacheGuilds.set(member.guild.id, {
-        ...(cacheGuilds.get(member.guild.id) ?? {}),
-        welcome_channel: channel.id,
-    })
     const bgpath = join(process.cwd(), 'imgs', 'background.png')
     const background = await Canvas.loadImage(bgpath)
     const canvas = Canvas.createCanvas(background.width, background.height)
@@ -59,7 +53,7 @@ export async function handler (member: GuildMember) {
     ctx.font = 'bold 40px Ginto'
     ctx.fillText('@' + member.displayName, 250, 150)
     ctx.font = 'bold 30px Ginto'
-    ctx.fillText('A OsaisDev', 250, 200)
+    ctx.fillText('A ' + member.guild.name, 250, 200)
 
     const pfp = await Jimp.read(member.displayAvatarURL({ extension: 'png', size: 1024 }))
     pfp.resize(200, 200)

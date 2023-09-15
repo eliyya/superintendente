@@ -1,15 +1,14 @@
 import { ActionRowBuilder, ChannelSelectMenuBuilder, ChannelType, ChatInputCommandInteraction, EmbedBuilder } from 'offdjs/djs'
-
-import { supabase } from '../supabase.js'
+import { WelcomeConfigModel } from '../models/welcome_config/supabase.js'
 
 export async function handler (interaction: ChatInputCommandInteraction) {
     if (!interaction.inCachedGuild()) return
     await interaction.deferReply()
-    const req = await supabase.from('guilds').select().eq('id', interaction.guildId)
+    const config = await WelcomeConfigModel.get(interaction.guildId)
     // TODO: check if the bot can send messages or delete config
     void interaction.editReply({
         embeds: [
-            createWelcomeConfigEmbed(req.data?.[0]?.welcome_channel),
+            createWelcomeConfigEmbed(config.channel),
         ],
         components: [
             createSelectWelcomeChannel(),
