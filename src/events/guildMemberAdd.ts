@@ -45,7 +45,7 @@ export async function handler (member: GuildMember) {
     ctxMask.fillRect(250, 115, nameLength.width, 40)
 
     ctx.font = 'bold 30px Ginto'
-    const desLength = ctx.measureText('A OsaisDev')
+    const desLength = ctx.measureText('A ' + member.guild.name)
     ctxMask.fillRect(250, 175, desLength.width, 30)
 
     const back = await Jimp.read(bgpath)
@@ -78,7 +78,8 @@ export async function handler (member: GuildMember) {
     })
 
     await channel.send({
-        content: `Hola Developer. Bienvenido ${member.displayName} a ${member.guild.name}`,
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        content: `Bienvenido ${member} a ${member.guild.name}`,
         files: [attachment],
     })
 }
