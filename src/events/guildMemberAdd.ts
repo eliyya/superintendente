@@ -2,13 +2,21 @@ import { GuildMember, AttachmentBuilder } from 'offdjs/djs'
 import { join } from 'node:path'
 import Canvas from 'canvas'
 import Jimp from 'jimp'
+import cacheGuilds from '../cache/cacheGuilds.js'
+import { supabase } from '../supabase.js'
 
 export async function handler (member: GuildMember) {
     const guild = member.guild
-    const channel = guild.channels.cache.get('1128547453449273387')
+    const channelId = cacheGuilds.get(member.guild.id)?.welcome_channel ?? (await supabase.from('guilds').select().eq('id', member.guild.id)).data?.[0].welcome_channel
+    if (!channelId) return
+    const channel = guild.channels.cache.get(channelId)
     if (!channel) return
     if (!channel.isTextBased()) return
-
+    // cache
+    cacheGuilds.set(member.guild.id, {
+        ...(cacheGuilds.get(member.guild.id) ?? {}),
+        welcome_channel: channel.id,
+    })
     const bgpath = join(process.cwd(), 'imgs', 'background.png')
     const background = await Canvas.loadImage(bgpath)
     const canvas = Canvas.createCanvas(background.width, background.height)
@@ -66,11 +74,11 @@ export async function handler (member: GuildMember) {
     const img = canvas.toBuffer()
     const attachment = new AttachmentBuilder(img, {
         name: `welcome_${member.displayName}.png`,
-        description: `Bienvenido ${member.displayName} a la comunidad de OasisDev`,
+        description: `Bienvenido ${member.displayName} a ${member.guild.name}`,
     })
 
     await channel.send({
-        content: `Hola Developer. Bienvenido ${member.displayName} a la comunidad de OasisDev :D`,
+        content: `Hola Developer. Bienvenido ${member.displayName} a ${member.guild.name}`,
         files: [attachment],
     })
 }

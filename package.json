@@ -7,13 +7,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "offdjs build/server.js -i GUILDS GUILD_MEMBERS -r build",
-    "dev": "nodemon -e js --exec \"npm start\"",
+    "dev": "nodemon -e ts --exec \"npm run build && npm start\"",
     "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "2.33.2",
     "canvas": "2.11.2",
     "express": "^4.18.2",
     "jimp": "0.22.8",
