@@ -2,11 +2,11 @@ import { GuildMember, AttachmentBuilder } from 'offdjs/djs'
 import { join } from 'node:path'
 import Canvas from 'canvas'
 import Jimp from 'jimp'
-import { WelcomeConfigModel } from '../models/welcome_config/supabase.js'
+import { welcomeConfigController } from '#controller'
 
 export async function handler (member: GuildMember) {
     const guild = member.guild
-    const config = await WelcomeConfigModel.get(member.guild.id)
+    const config = await welcomeConfigController.get(member.guild.id)
     if (!config.channel) return
     const channel = guild.channels.cache.get(config.channel)
     if (!channel) return

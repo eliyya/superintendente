@@ -28,6 +28,9 @@
     "ts-standard": "^12.0.2",
     "typescript": "5.1.6"
   },
+  "imports": {
+    "#controller": "./build/controllers/default.js"
+  },
   "eslintConfig": {
     "extends": "./node_modules/ts-standard/eslintrc.json",
     "parserOptions": {

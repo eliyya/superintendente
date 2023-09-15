@@ -1,10 +1,10 @@
 import { ActionRowBuilder, ChannelSelectMenuBuilder, ChannelType, ChatInputCommandInteraction, EmbedBuilder } from 'offdjs/djs'
-import { WelcomeConfigModel } from '../models/welcome_config/supabase.js'
+import { welcomeConfigController } from '#controller'
 
 export async function handler (interaction: ChatInputCommandInteraction) {
     if (!interaction.inCachedGuild()) return
     await interaction.deferReply()
-    const config = await WelcomeConfigModel.get(interaction.guildId)
+    const config = await welcomeConfigController.get(interaction.guildId)
     // TODO: check if the bot can send messages or delete config
     void interaction.editReply({
         embeds: [
