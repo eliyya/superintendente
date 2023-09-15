@@ -1,7 +1,4 @@
-import { Database } from '../database.types.js'
-import { iWelcomeConfigModel } from '../models/welcome_config/interface.js'
-
-type welcome_config = Database['public']['Tables']['welcome_config']['Row']
+import { iWelcomeConfigModel, welcome_config } from '../models/welcome_config/interface.js'
 
 export class WelcomeConfigController {
     welcomeConfigController: iWelcomeConfigModel

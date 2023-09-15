@@ -1,10 +1,9 @@
 import { Collection } from 'offdjs/djs'
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '../../database.types.js'
-import { iWelcomeConfigModel } from './interface.js'
+import { iWelcomeConfigModel, welcome_config } from './interface.js'
 
 const supabase = createClient<Database>(process.env.SUPABASE_URL as string, process.env.SERVICE_KEY as string)
-type welcome_config = Database['public']['Tables']['welcome_config']['Row']
 
 export class WelcomeConfigModel implements iWelcomeConfigModel {
     cache = new Collection<string, welcome_config>()
