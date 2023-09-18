@@ -1,8 +1,8 @@
 import { GuildMember, AttachmentBuilder } from 'offdjs/djs'
+import { welcomeConfigController } from '#controller'
 import { join } from 'node:path'
 import Canvas from 'canvas'
 import Jimp from 'jimp'
-import { welcomeConfigController } from '#controller'
 
 export async function handler (member: GuildMember) {
     const guild = member.guild
@@ -12,10 +12,14 @@ export async function handler (member: GuildMember) {
     if (!channel) return
     if (!channel.isTextBased()) return
     const bgpath = join(process.cwd(), 'imgs', 'background.png')
-    const background = await Canvas.loadImage(bgpath)
+    const background = await Canvas.loadImage(config.background ?? 'https://cdn.discordapp.com/attachments/1153183774473981952/1153184007341756416/background.png')
     const canvas = Canvas.createCanvas(background.width, background.height)
     const ctx = canvas.getContext('2d')
     ctx.drawImage(background, 0, 0)
+    config.message ??= 'Bienvenido {member} a {guild}'
+    config.message = config.message
+        .replace(/\{member\}/g, member.toString())
+        .replace(/\{guild\}/g, guild.name)
 
     const maskText = Canvas.createCanvas(background.width, background.height)
     const ctxMask = maskText.getContext('2d')
@@ -68,12 +72,12 @@ export async function handler (member: GuildMember) {
     const img = canvas.toBuffer()
     const attachment = new AttachmentBuilder(img, {
         name: `welcome_${member.displayName}.png`,
-        description: `Bienvenido ${member.displayName} a ${member.guild.name}`,
+        description: config.message,
     })
 
     await channel.send({
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        content: `Bienvenido ${member} a ${member.guild.name}`,
+        content: config.message,
         files: [attachment],
     })
 }

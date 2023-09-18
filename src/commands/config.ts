@@ -30,6 +30,7 @@ export function createWelcomeConfigEmbed (config: Omit<welcome_config, 'id'>) {
         .setDescription(`Puede establecer o cambiar el canal en el menu de abajo
 Las variables para el mensaje pueden ser {member} y {guild}`,
         )
+        .setImage(config.background ?? 'https://cdn.discordapp.com/attachments/1153183774473981952/1153184007341756416/background.png')
 }
 
 export function createSelectWelcomeChannel () {
@@ -48,6 +49,10 @@ export function createSelectWelcomeChannel () {
                 new ButtonBuilder()
                     .setCustomId('config:welcome:message')
                     .setLabel('Cambiar mensaje')
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('config:welcome:background')
+                    .setLabel('Cambiar background')
                     .setStyle(ButtonStyle.Primary),
             ),
     ]
