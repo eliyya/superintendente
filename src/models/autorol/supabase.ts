@@ -1,4 +1,4 @@
-import { supabase } from 'src/supabase.js'
+import { supabase } from '../../supabase.js'
 import { autorol, iAutorolModel } from './interface.js'
 import { Collection } from 'offdjs/djs'
 
