@@ -1,11 +1,11 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelSelectMenuBuilder, ChannelType, ChatInputCommandInteraction, EmbedBuilder } from 'offdjs/djs'
-import { welcomeConfigController } from '#controller'
+import { welcomeController } from '#controller'
 import { welcome_config } from 'src/models/welcome_config/interface.js'
 
 export async function handler (interaction: ChatInputCommandInteraction) {
     if (!interaction.inCachedGuild()) return
     await interaction.deferReply()
-    const config = await welcomeConfigController.get(interaction.guildId)
+    const config = await welcomeController.get(interaction.guildId)
     // TODO: check if the bot can send messages or delete config
     void interaction.editReply({
         embeds: [

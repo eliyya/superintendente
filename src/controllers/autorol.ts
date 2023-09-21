@@ -1,6 +1,6 @@
 import { iAutorolModel, autorol } from '../models/autorol/interface.js'
 
-export class WelcomeConfigController {
+export class AutorolController {
     autorolController: iAutorolModel
     constructor (welcomeConfigController: iAutorolModel) {
         this.autorolController = welcomeConfigController

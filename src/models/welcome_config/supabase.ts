@@ -1,8 +1,8 @@
 import { Collection } from 'offdjs/djs'
-import { iWelcomeConfigModel, welcome_config } from './interface.js'
+import { iWelcomeModel, welcome_config } from './interface.js'
 import { supabase } from '../../supabase.js'
 
-export class WelcomeConfigModel implements iWelcomeConfigModel {
+export class WelcomeModel implements iWelcomeModel {
     cache = new Collection<string, welcome_config>()
 
     async get (guildId: string): Promise<welcome_config> {

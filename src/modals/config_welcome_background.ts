@@ -1,5 +1,5 @@
 import { ModalSubmitInteraction } from 'offdjs/djs'
-import { welcomeConfigController } from '#controller'
+import { welcomeController } from '#controller'
 import { createSelectWelcomeChannel, createWelcomeConfigEmbed } from '../commands/config.js'
 import { loadImage } from 'canvas'
 
@@ -19,7 +19,7 @@ export async function handler (interaction: ModalSubmitInteraction) {
             ephemeral: true,
         })
     }
-    const config = await welcomeConfigController.update(interaction.guildId, {
+    const config = await welcomeController.update(interaction.guildId, {
         background,
     })
     return await interaction.update({

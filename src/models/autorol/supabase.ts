@@ -2,7 +2,7 @@ import { supabase } from 'src/supabase.js'
 import { autorol, iAutorolModel } from './interface.js'
 import { Collection } from 'offdjs/djs'
 
-export class AutoroleConfigModel implements iAutorolModel {
+export class AutoroleModel implements iAutorolModel {
     cache = new Collection<string, autorol>()
 
     async create (guildId: string, name: string): Promise<autorol> {
