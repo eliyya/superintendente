@@ -1,11 +1,11 @@
 import { supabase } from 'src/supabase.js'
-import { autorole_config, iAutoroleConfigModel } from './interface.js'
+import { autorol, iAutorolModel } from './interface.js'
 import { Collection } from 'offdjs/djs'
 
-export class AutoroleConfigModel implements iAutoroleConfigModel {
-    cache = new Collection<string, autorole_config>()
+export class AutoroleConfigModel implements iAutorolModel {
+    cache = new Collection<string, autorol>()
 
-    async create (guildId: string, name: string): Promise<autorole_config> {
+    async create (guildId: string, name: string): Promise<autorol> {
         const req = await supabase.from('autorole_config').insert({
             guild: guildId,
             name,
