@@ -9,4 +9,8 @@ export class AutorolController {
     async create (guildId: string, name: string): Promise<autorol> {
         return await this.autorolController.create(guildId, name)
     }
+
+    async add (group: string, guild: string, role: string): Promise<autorol> {
+        return await this.autorolController.add(group, guild, role)
+    }
 }

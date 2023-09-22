@@ -1,5 +1,5 @@
 import { autorolController } from '#controller'
-import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder, SlashCommandStringOption, SlashCommandSubcommandBuilder } from 'offdjs/djs'
+import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder, SlashCommandRoleOption, SlashCommandStringOption, SlashCommandSubcommandBuilder } from 'offdjs/djs'
 
 export async function handler (ctx: ChatInputCommandInteraction) {
     if (ctx.options.getSubcommand() === 'create') return await create(ctx)
@@ -17,7 +17,21 @@ async function create (ctx: ChatInputCommandInteraction) {
 }
 
 async function add (ctx: ChatInputCommandInteraction) {
-    void ctx.reply('en desarrollo')
+    if (!ctx.inCachedGuild()) return
+    const group = ctx.options.getString('group', true)
+    const role = ctx.options.getRole('role', true)
+    try {
+        await autorolController.add(group, ctx.guildId, role.id)
+        void ctx.reply({
+            content: `Rol ${role.name} added to ${group} group`,
+        })
+    } catch (error) {
+        if ((error as Error).message === 'Group not found') {
+            void ctx.reply({
+                content: `Group ${group} not found`,
+            })
+        }
+    }
 }
 
 async function remove (ctx: ChatInputCommandInteraction) {
@@ -35,6 +49,23 @@ export const command = new SlashCommandBuilder()
             .addStringOption(
                 new SlashCommandStringOption()
                     .setName('name')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            ),
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('add')
+            .setDescription('Crear un grupo de autoroles')
+            .addStringOption(
+                new SlashCommandStringOption()
+                    .setName('group')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            )
+            .addRoleOption(
+                new SlashCommandRoleOption()
+                    .setName('role')
                     .setDescription('Nombre del grupo')
                     .setRequired(true),
             ),
