@@ -1,4 +1,5 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, SlashCommandSubcommandBuilder } from 'offdjs/djs'
+import { autorolController } from '#controller'
+import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder, SlashCommandStringOption, SlashCommandSubcommandBuilder } from 'offdjs/djs'
 
 export async function handler (ctx: ChatInputCommandInteraction) {
     if (ctx.options.getSubcommand() === 'create') return await create(ctx)
@@ -7,7 +8,12 @@ export async function handler (ctx: ChatInputCommandInteraction) {
 }
 
 async function create (ctx: ChatInputCommandInteraction) {
-    void ctx.reply('en desarrollo')
+    if (!ctx.inCachedGuild()) return
+    const name = ctx.options.getString('name', true)
+    const config = await autorolController.create(ctx.guildId, name)
+    void ctx.reply({
+        content: `Autorol ${config.name} created`,
+    })
 }
 
 async function add (ctx: ChatInputCommandInteraction) {
@@ -33,3 +39,4 @@ export const command = new SlashCommandBuilder()
                     .setRequired(true),
             ),
     )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)

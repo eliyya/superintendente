@@ -1,4 +1,4 @@
-import { iWelcomeModel, welcome_config } from '../models/welcome_config/interface.js'
+import { iWelcomeModel, welcome_config } from '../models/welcome/interface.js'
 
 export class WelcomeController {
     welcomeController: iWelcomeModel

@@ -1,5 +1,5 @@
-import { WelcomeModel } from '../../models/welcome_config/supabase.js'
-import { WelcomeController } from '../welcome_config.js'
+import { WelcomeModel } from '../../models/welcome/supabase.js'
+import { WelcomeController } from '../welcome.js'
 import { AutoroleModel } from '../../models/autorol/supabase.js'
 import { AutorolController } from '../autorol.js'
 
