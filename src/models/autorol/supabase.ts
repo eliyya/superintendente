@@ -32,4 +32,55 @@ export class AutoroleModel implements iAutorolModel {
             roles: res.data?.map(i => i.role) ?? [],
         }
     }
+
+    async remove (group: string, guildId: string, roleId: string): Promise<autorol> {
+        const g = await supabase
+            .from('autorole_config')
+            .select('*, autoroles_roles (*)')
+            .eq('guild', guildId)
+            .eq('name', group)
+        const config = g.data?.[0]
+        if (!config) throw new Error('Group not found')
+        await supabase
+            .from('autoroles_roles')
+            .delete()
+            .eq('group', config.id)
+            .eq('role', roleId)
+        return {
+            ...config,
+            roles: config.autoroles_roles.map(i => i.role).filter(i => i !== roleId),
+        }
+    }
+
+    async delete_ (guildId: string, group: string): Promise<void> {
+        const g = await supabase
+            .from('autorole_config')
+            .select()
+            .eq('guild', guildId)
+            .eq('name', group)
+        const config = g.data?.[0]
+        if (!config) throw new Error('Group not found')
+        void supabase
+            .from('autoroles_roles')
+            .delete()
+            .eq('group', config.id)
+        void supabase
+            .from('autorole_config')
+            .delete()
+            .eq('id', config.id)
+    }
+
+    async get (guildId: string, group: string): Promise<autorol> {
+        const g = await supabase
+            .from('autorole_config')
+            .select('*, autoroles_roles (*)')
+            .eq('guild', guildId)
+            .eq('name', group)
+        const config = g.data?.[0]
+        if (!config) throw new Error('Group not found')
+        return {
+            ...config,
+            roles: config.autoroles_roles.map(i => i.role),
+        }
+    }
 }
