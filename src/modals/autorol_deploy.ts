@@ -34,4 +34,8 @@ export async function handler (ctx: ModalSubmitInteraction) {
         content,
         components,
     })
+    void ctx.reply({
+        ephemeral: true,
+        content: 'desplegado',
+    })
 }
