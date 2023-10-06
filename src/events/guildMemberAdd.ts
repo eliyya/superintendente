@@ -1,12 +1,12 @@
 import { GuildMember, AttachmentBuilder } from 'offdjs/djs'
-import { welcomeConfigController } from '#controller'
+import { welcomeController } from '#controller'
 import { join } from 'node:path'
 import Canvas from 'canvas'
 import Jimp from 'jimp'
 
 export async function handler (member: GuildMember) {
     const guild = member.guild
-    const config = await welcomeConfigController.get(member.guild.id)
+    const config = await welcomeController.get(member.guild.id)
     if (!config.channel) return
     const channel = guild.channels.cache.get(config.channel)
     if (!channel) return

@@ -1,4 +1,7 @@
-import { WelcomeConfigModel } from '../../models/welcome_config/supabase.js'
-import { WelcomeConfigController } from '../welcome_config.js'
+import { WelcomeModel } from '../../models/welcome/supabase.js'
+import { WelcomeController } from '../welcome.js'
+import { AutoroleModel } from '../../models/autorol/supabase.js'
+import { AutorolController } from '../autorol.js'
 
-export const welcomeConfigController = new WelcomeConfigController(new WelcomeConfigModel())
+export const welcomeController = new WelcomeController(new WelcomeModel())
+export const autorolController = new AutorolController(new AutoroleModel())

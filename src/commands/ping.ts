@@ -1,7 +1,9 @@
-import { ChatInputCommandInteraction } from 'offdjs/djs'
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'offdjs/djs'
 
 export async function handler (interaction: ChatInputCommandInteraction) {
     void interaction.reply('pong!')
 }
 
-export const name = 'ping'
+export const command = new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('ping')

@@ -1,17 +1,14 @@
 import { Collection } from 'offdjs/djs'
-import { createClient } from '@supabase/supabase-js'
-import { Database } from '../../database.types.js'
-import { iWelcomeConfigModel, welcome_config } from './interface.js'
+import { iWelcomeModel, welcome_config } from './interface.js'
+import { supabase } from '../../supabase.js'
 
-const supabase = createClient<Database>(process.env.SUPABASE_URL as string, process.env.SERVICE_KEY as string)
-
-export class WelcomeConfigModel implements iWelcomeConfigModel {
+export class WelcomeModel implements iWelcomeModel {
     cache = new Collection<string, welcome_config>()
 
     async get (guildId: string): Promise<welcome_config> {
         if (this.cache.has(guildId)) return this.cache.get(guildId) as welcome_config
         const req = await supabase.from('welcome_config').select().eq('id', guildId)
-        const config = req.data?.[0] ?? { channel: null, message: null, id: guildId }
+        const config = req.data?.[0] ?? { channel: null, message: null, id: guildId, background: null }
         return config
     }
 

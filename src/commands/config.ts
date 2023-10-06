@@ -1,11 +1,11 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelSelectMenuBuilder, ChannelType, ChatInputCommandInteraction, EmbedBuilder } from 'offdjs/djs'
-import { welcomeConfigController } from '#controller'
-import { welcome_config } from 'src/models/welcome_config/interface.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelSelectMenuBuilder, ChannelType, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'offdjs/djs'
+import { welcomeController } from '#controller'
+import { welcome_config } from 'src/models/welcome/interface.js'
 
 export async function handler (interaction: ChatInputCommandInteraction) {
     if (!interaction.inCachedGuild()) return
     await interaction.deferReply()
-    const config = await welcomeConfigController.get(interaction.guildId)
+    const config = await welcomeController.get(interaction.guildId)
     // TODO: check if the bot can send messages or delete config
     void interaction.editReply({
         embeds: [
@@ -15,7 +15,10 @@ export async function handler (interaction: ChatInputCommandInteraction) {
     })
 }
 
-export const name = 'config'
+export const command = new SlashCommandBuilder()
+    .setName('config')
+    .setDescription('Configuracion del bot')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 
 export function createWelcomeConfigEmbed (config: Omit<welcome_config, 'id'>) {
     return new EmbedBuilder()
