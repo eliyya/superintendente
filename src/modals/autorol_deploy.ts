@@ -18,7 +18,10 @@ export async function handler (ctx: ModalSubmitInteraction) {
     let i = 0
     for (const r of config.roles) {
         const role = await ctx.guild.roles.fetch(r)
-        if (!role) continue // TODO: delete from db
+        if (!role) {
+            void autorolController.remove(config.name, ctx.guildId, r)
+            continue
+        }
         components[i] ??= new ActionRowBuilder<ButtonBuilder>()
         if (components[i].components.length > 5) {
             components[++i] ??= new ActionRowBuilder<ButtonBuilder>()
@@ -34,7 +37,7 @@ export async function handler (ctx: ModalSubmitInteraction) {
         content,
         components,
     })
-    void ctx.reply({
+    return await ctx.reply({
         ephemeral: true,
         content: 'desplegado',
     })
