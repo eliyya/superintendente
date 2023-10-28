@@ -2,32 +2,32 @@ import { createSelectWelcomeChannel, createWelcomeConfigEmbed } from '../command
 import { AnySelectMenuInteraction } from 'offdjs/djs'
 import { welcomeController } from '#controller'
 
-export async function handler (interaction: AnySelectMenuInteraction) {
-    if (!interaction.isChannelSelectMenu()) return
-    if (!interaction.inCachedGuild()) return
-    await interaction.deferReply({
+export async function handler (ctx: AnySelectMenuInteraction) {
+    if (!ctx.isChannelSelectMenu()) return
+    if (!ctx.inCachedGuild()) return
+    await ctx.deferReply({
         ephemeral: true,
     })
-    const channel = interaction.channels.first()
+    const channel = ctx.channels.first()
     if (!channel) {
         // delete
-        const config = await welcomeController.update(interaction.guildId, { channel: null })
-        await interaction.message.edit({
+        const config = await welcomeController.update(ctx.guildId, { channel: null })
+        await ctx.message.edit({
             embeds: [
                 createWelcomeConfigEmbed(config),
             ],
             components: createSelectWelcomeChannel(),
         })
-        return await interaction.editReply('Configuracion actualizada')
+        return await ctx.editReply('Configuracion actualizada')
     }
-    const config = await welcomeController.update(interaction.guildId, { channel: channel.id })
-    await interaction.message.edit({
+    const config = await welcomeController.update(ctx.guildId, { channel: channel.id })
+    await ctx.message.edit({
         embeds: [
             createWelcomeConfigEmbed(config),
         ],
         components: createSelectWelcomeChannel(),
     })
-    return await interaction.editReply('Configuracion actualizada')
+    return await ctx.editReply('Configuracion actualizada')
 }
 
 export const name = /config:welcome/

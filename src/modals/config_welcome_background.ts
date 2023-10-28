@@ -3,26 +3,26 @@ import { welcomeController } from '#controller'
 import { createSelectWelcomeChannel, createWelcomeConfigEmbed } from '../commands/config.js'
 import { loadImage } from 'canvas'
 
-export async function handler (interaction: ModalSubmitInteraction) {
-    if (!interaction.inCachedGuild()) return
-    if (!interaction.isFromMessage()) return
-    const background = interaction.fields.getTextInputValue('background')
+export async function handler (ctx: ModalSubmitInteraction) {
+    if (!ctx.inCachedGuild()) return
+    if (!ctx.isFromMessage()) return
+    const background = ctx.fields.getTextInputValue('background')
     if (!isURL(background)) {
-        return await interaction.reply({
+        return await ctx.reply({
             content: 'Se necesita una URL',
             ephemeral: true,
         })
     }
     if (!await isImmage(background)) {
-        return await interaction.reply({
+        return await ctx.reply({
             content: 'Se necesita una imagen',
             ephemeral: true,
         })
     }
-    const config = await welcomeController.update(interaction.guildId, {
+    const config = await welcomeController.update(ctx.guildId, {
         background,
     })
-    return await interaction.update({
+    return await ctx.update({
         embeds: [
             createWelcomeConfigEmbed(config),
         ],
