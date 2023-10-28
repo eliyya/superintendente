@@ -108,6 +108,7 @@ export const command = new SlashCommandBuilder()
     .setName('autorol')
     .setDescription('Configuracion de Autoroles')
     .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand(
         new SlashCommandSubcommandBuilder()
             .setName('create')
@@ -175,4 +176,8 @@ export const command = new SlashCommandBuilder()
                     .setRequired(true),
             ),
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('list')
+            .setDescription('List the autoroles groups'),
+    )

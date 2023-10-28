@@ -1,1 +1,1 @@
-export * from './instances/supabase.js'
+export * from './supabase.js'

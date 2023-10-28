@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder, SlashCommandStringOption } from 'offdjs/djs'
+import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, PermissionFlagsBits, SlashCommandBuilder, SlashCommandStringOption, TextInputBuilder, TextInputStyle } from 'offdjs/djs'
 
 export async function handler (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
@@ -16,6 +16,23 @@ export async function handler (ctx: ChatInputCommandInteraction) {
                 ephemeral: true,
             })
         }
+    } else {
+        await ctx.showModal(
+            new ModalBuilder()
+                .setCustomId('say')
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                .setTitle(`${ctx.client.user} say`)
+                .setComponents(
+                    new ActionRowBuilder<TextInputBuilder>()
+                        .setComponents(
+                            new TextInputBuilder()
+                                .setCustomId('content')
+                                .setLabel('Message')
+                                .setPlaceholder('Hello everyone')
+                                .setStyle(TextInputStyle.Paragraph),
+                        ),
+                ),
+        )
     }
 }
 
