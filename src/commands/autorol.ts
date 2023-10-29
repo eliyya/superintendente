@@ -89,7 +89,7 @@ async function deploy (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
     const group = ctx.options.getString('group', true)
     try {
-        const config = await autorolController.get(ctx.guildId, group)
+        const config = await autorolController.find(ctx.guildId, group)
         void ctx.showModal(
             new ModalBuilder()
                 .setCustomId(`autorol:deploy:${config.id}`)

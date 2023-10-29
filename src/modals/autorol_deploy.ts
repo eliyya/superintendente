@@ -8,7 +8,7 @@ export async function handler (ctx: ModalSubmitInteraction) {
     if (!id) return
     let config: autorol
     try {
-        config = await autorolController.get(ctx.guildId, id)
+        config = await autorolController.get(id)
     } catch (error) {
         return await ctx.reply({
             content: 'Grupo no encontrado',

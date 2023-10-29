@@ -70,12 +70,25 @@ export class AutoroleModel implements iAutorolModel {
             .eq('id', config.id)
     }
 
-    async get (guildId: string, group: string): Promise<autorol> {
+    async find (guildId: string, groupName: string): Promise<autorol> {
         const g = await supabase
             .from('autorole_config')
             .select('*, autoroles_roles (*)')
             .eq('guild', guildId)
-            .eq('name', group)
+            .eq('name', groupName)
+        const config = g.data?.[0]
+        if (!config) throw new Error('Group not found')
+        return {
+            ...config,
+            roles: config.autoroles_roles.map(i => i.role),
+        }
+    }
+
+    async get (id: string): Promise<autorol> {
+        const g = await supabase
+            .from('autorole_config')
+            .select('*, autoroles_roles (*)')
+            .eq('id', id)
         const config = g.data?.[0]
         if (!config) throw new Error('Group not found')
         return {
