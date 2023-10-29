@@ -222,3 +222,81 @@ export const command = new SlashCommandBuilder()
             .setName('list')
             .setDescription('List the autoroles groups'),
     )
+
+console.log(JSON.stringify(new SlashCommandBuilder()
+    .setName('autorol')
+    .setDescription('Configuracion de Autoroles')
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('create')
+            .setDescription('Crear un grupo de autoroles')
+            .addStringOption(
+                new SlashCommandStringOption()
+                    .setName('name')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            ),
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('add')
+            .setDescription('Crear un grupo de autoroles')
+            .addStringOption(
+                new SlashCommandStringOption()
+                    .setName('group')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            )
+            .addRoleOption(
+                new SlashCommandRoleOption()
+                    .setName('role')
+                    .setDescription('Rol a agregar')
+                    .setRequired(true),
+            ),
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('remove')
+            .setDescription('Elimina un rol de un grupo')
+            .addStringOption(
+                new SlashCommandStringOption()
+                    .setName('group')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            )
+            .addRoleOption(
+                new SlashCommandRoleOption()
+                    .setName('role')
+                    .setDescription('Rol a eliminar')
+                    .setRequired(true),
+            ),
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('delete')
+            .setDescription('Elimina un grupo entero')
+            .addStringOption(
+                new SlashCommandStringOption()
+                    .setName('group')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            ),
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('deploy')
+            .setDescription('Depliega el autorol')
+            .addStringOption(
+                new SlashCommandStringOption()
+                    .setName('group')
+                    .setDescription('Nombre del grupo')
+                    .setRequired(true),
+            ),
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+            .setName('list')
+            .setDescription('List the autoroles groups'),
+    ).toJSON()))

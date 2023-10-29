@@ -4,12 +4,13 @@ import { autorol } from 'src/models/autorol/interface.js'
 
 export async function handler (ctx: ModalSubmitInteraction) {
     if (!ctx.inCachedGuild()) return
-    const id = ctx.id.split(':').at(-1)
+    const id = ctx.customId.split(':').at(-1)
     if (!id) return
     let config: autorol
     try {
         config = await autorolController.get(id)
     } catch (error) {
+        console.log(error)
         return await ctx.reply({
             content: 'Grupo no encontrado',
         })
