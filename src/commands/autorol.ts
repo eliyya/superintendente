@@ -2,6 +2,7 @@ import { autorolController } from '#controller'
 import {
     ActionRowBuilder,
     ChatInputCommandInteraction,
+    EmbedBuilder,
     ModalBuilder,
     PermissionFlagsBits,
     SlashCommandBuilder,
@@ -18,6 +19,7 @@ export async function handler (ctx: ChatInputCommandInteraction) {
     if (ctx.options.getSubcommand() === 'remove') return await remove(ctx)
     if (ctx.options.getSubcommand() === 'delete') return await delete_(ctx)
     if (ctx.options.getSubcommand() === 'deploy') return await deploy(ctx)
+    if (ctx.options.getSubcommand() === 'list') return await list(ctx)
 }
 
 async function create (ctx: ChatInputCommandInteraction) {
@@ -76,7 +78,7 @@ async function delete_ (ctx: ChatInputCommandInteraction) {
     }
 }
 
-async function deploy (ctx: ChatInputCommandInteraction<import('discord.js').CacheType>) {
+async function deploy (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
     const group = ctx.options.getString('group', true)
     try {
@@ -101,6 +103,24 @@ async function deploy (ctx: ChatInputCommandInteraction<import('discord.js').Cac
         void ctx.reply({
             content: `Group ${group} not found`,
         })
+    }
+}
+
+async function list (ctx: ChatInputCommandInteraction) {
+    if (!ctx.inCachedGuild()) return
+    void ctx.reply('Sending...')
+    for (const a of await autorolController.getGuild(ctx.guildId)) {
+        void ctx.channel?.send({
+            embeds: [
+                new EmbedBuilder()
+                    .setTitle(a.name)
+                    .setFooter({
+                        text: `ID: ${a.id}`,
+                    })
+                    .setDescription(a.roles.map(r => `<@&${r}>`).join(' ')),
+            ],
+        })
+        await new Promise(resolve => setTimeout(resolve, 1_000))
     }
 }
 
