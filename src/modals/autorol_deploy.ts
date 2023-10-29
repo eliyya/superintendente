@@ -1,19 +1,21 @@
 import { autorolController } from '#controller'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalSubmitInteraction } from 'offdjs/djs'
+import { autorol } from 'src/models/autorol/interface.js'
 
 export async function handler (ctx: ModalSubmitInteraction) {
     if (!ctx.inCachedGuild()) return
     const id = ctx.id.split(':').at(-1)
     if (!id) return
-    const config = await autorolController.get(ctx.guildId, id)
-    if (!config) {
+    let config: autorol
+    try {
+        config = await autorolController.get(ctx.guildId, id)
+    } catch (error) {
         return await ctx.reply({
             content: 'Grupo no encontrado',
         })
     }
     const content = ctx.fields.getTextInputValue('content')
-    const channel = ctx.channel
-    if (!channel) return
+    if (!ctx.channel) return
     const components: Array<ActionRowBuilder<ButtonBuilder>> = []
     let i = 0
     for (const r of config.roles) {
@@ -33,7 +35,7 @@ export async function handler (ctx: ModalSubmitInteraction) {
                 .setStyle(ButtonStyle.Primary),
         )
     }
-    void channel.send({
+    void ctx.channel.send({
         content,
         components,
     })
