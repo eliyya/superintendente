@@ -26,10 +26,15 @@ export async function handler (ctx: ChatInputCommandInteraction) {
 async function create (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
     const name = ctx.options.getString('name', true)
-    const config = await autorolController.create(ctx.guildId, name)
-    void ctx.reply({
-        content: `Autorol ${config.name} created`,
-    })
+    try {
+        const config = await autorolController.create(ctx.guildId, name)
+        void ctx.reply({
+            content: `Autorol ${config.name} created`,
+        })
+    } catch (error) {
+        console.error(error)
+        void ctx.reply('Hubo un problema')
+    }
 }
 
 async function add (ctx: ChatInputCommandInteraction) {
@@ -114,6 +119,7 @@ async function list (ctx: ChatInputCommandInteraction) {
     try {
         await Promise.all((await autorolController.getGuild(ctx.guildId)).map(a => autoroles.push(a)))
     } catch (error) {
+        console.log(error)
         return await ctx.editReply('Hubo un problema')
     }
     if (!autoroles.length) return await ctx.editReply('No hay registros')
@@ -130,6 +136,7 @@ async function list (ctx: ChatInputCommandInteraction) {
                 ],
             })
         } catch (error) {
+            console.log(error)
             return await ctx.editReply('Hubo un problema')
         }
         await new Promise(resolve => setTimeout(resolve, 1_000))
