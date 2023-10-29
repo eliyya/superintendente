@@ -14,6 +14,9 @@ export async function handler (ctx: ModalSubmitInteraction) {
             content: 'Grupo no encontrado',
         })
     }
+    await ctx.deferReply({
+        ephemeral: true,
+    })
     const content = ctx.fields.getTextInputValue('content')
     if (!ctx.channel) return
     const components: Array<ActionRowBuilder<ButtonBuilder>> = []
@@ -39,8 +42,7 @@ export async function handler (ctx: ModalSubmitInteraction) {
         content,
         components,
     })
-    return await ctx.reply({
-        ephemeral: true,
+    return await ctx.editReply({
         content: 'desplegado',
     })
 }
