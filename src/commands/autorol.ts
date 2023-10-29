@@ -74,10 +74,11 @@ async function remove (ctx: ChatInputCommandInteraction) {
 
 async function delete_ (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
-    console.log('delete')
     const group = ctx.options.getString('group', true)
     try {
-        await autorolController.delete_(ctx.guildId, group)
+        const autorole = await autorolController.find(ctx.guildId, group)
+        await autorolController.delete_(autorole.id)
+        void ctx.reply(`${group} deleted`)
     } catch (error) {
         void ctx.reply({
             content: `Group ${group} not found`,

@@ -5,9 +5,12 @@ export type roles = Database['public']['Tables']['autoroles_roles']['Row']
 export type autorol = autorol_db & { roles: string[] }
 
 export interface iAutorolModel {
-    create: (guildId: string, name: string) => Promise<autorol>
     add: (group: string, guild: string, role: string) => Promise<autorol>
     remove: (group: string, guild: string, role: string) => Promise<autorol>
-    delete_: (guildId: string, group: string) => Promise<void>
-    get: (guildId: string, group: string) => Promise<autorol>
+    create: (guildId: string, name: string) => Promise<autorol>
+    delete_: (id: number) => Promise<void>
+    find: (guildId: string, groupName: string) => Promise<autorol>
+    get: (id: string) => Promise<autorol>
+    getAll: () => Promise<autorol[]>
+    getGuild: (guildId: string) => Promise<autorol[]>
 }

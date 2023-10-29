@@ -52,12 +52,11 @@ export class AutoroleModel implements iAutorolModel {
         }
     }
 
-    async delete_ (guildId: string, group: string): Promise<void> {
+    async delete_ (id: number): Promise<void> {
         const g = await supabase
             .from('autorole_config')
             .select()
-            .eq('guild', guildId)
-            .eq('name', group)
+            .eq('guild', id)
         const config = g.data?.[0]
         if (!config) throw new Error('Group not found')
         void supabase
