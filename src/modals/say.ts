@@ -10,3 +10,5 @@ export async function handler (ctx: ModalSubmitInteraction) {
         ephemeral: true,
     })
 }
+
+export const name = /say/
