@@ -132,7 +132,7 @@ async function list (ctx: ChatInputCommandInteraction) {
                         .setFooter({
                             text: `ID: ${a.id}`,
                         })
-                        .setDescription(a.roles.map(r => `<@&${r}>`).join(' ')),
+                        .setDescription(a.roles.map(r => `<@&${r}>`).join(' ') || null),
                 ],
             })
         } catch (error) {
