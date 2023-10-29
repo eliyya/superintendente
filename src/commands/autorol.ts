@@ -74,6 +74,7 @@ async function remove (ctx: ChatInputCommandInteraction) {
 
 async function delete_ (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
+    console.log('delete')
     const group = ctx.options.getString('group', true)
     try {
         await autorolController.delete_(ctx.guildId, group)
@@ -128,11 +129,11 @@ async function list (ctx: ChatInputCommandInteraction) {
             await ctx.channel?.send({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle(a.name)
+                        .setTitle(`autorole ${a.name}`)
                         .setFooter({
                             text: `ID: ${a.id}`,
                         })
-                        .setDescription(a.roles.map(r => `<@&${r}>`).join(' ') || null),
+                        .setDescription(a.roles.map(r => `<@&${r}>`).join(' ') || 'sin roles asociados'),
                 ],
             })
         } catch (error) {

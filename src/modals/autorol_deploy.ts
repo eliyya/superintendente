@@ -42,3 +42,5 @@ export async function handler (ctx: ModalSubmitInteraction) {
         content: 'desplegado',
     })
 }
+
+export const name = /^autorol:deploy:[^:]*$/
