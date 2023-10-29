@@ -12,6 +12,7 @@ import {
     TextInputBuilder,
     TextInputStyle,
 } from 'offdjs/djs'
+import { autorol } from 'src/models/autorol/interface.js'
 
 export async function handler (ctx: ChatInputCommandInteraction) {
     if (ctx.options.getSubcommand() === 'create') return await create(ctx)
@@ -108,20 +109,32 @@ async function deploy (ctx: ChatInputCommandInteraction) {
 
 async function list (ctx: ChatInputCommandInteraction) {
     if (!ctx.inCachedGuild()) return
-    void ctx.reply('Sending...')
-    for (const a of await autorolController.getGuild(ctx.guildId)) {
-        void ctx.channel?.send({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle(a.name)
-                    .setFooter({
-                        text: `ID: ${a.id}`,
-                    })
-                    .setDescription(a.roles.map(r => `<@&${r}>`).join(' ')),
-            ],
-        })
+    await ctx.reply('Sending...')
+    const autoroles: autorol[] = []
+    try {
+        await Promise.all((await autorolController.getGuild(ctx.guildId)).map(a => autoroles.push(a)))
+    } catch (error) {
+        return await ctx.editReply('Hubo un problema')
+    }
+    if (!autoroles.length) return await ctx.editReply('No hay registros')
+    for (const a of autoroles) {
+        try {
+            await ctx.channel?.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle(a.name)
+                        .setFooter({
+                            text: `ID: ${a.id}`,
+                        })
+                        .setDescription(a.roles.map(r => `<@&${r}>`).join(' ')),
+                ],
+            })
+        } catch (error) {
+            return await ctx.editReply('Hubo un problema')
+        }
         await new Promise(resolve => setTimeout(resolve, 1_000))
     }
+    return await ctx.editReply('enviados')
 }
 
 export const command = new SlashCommandBuilder()
